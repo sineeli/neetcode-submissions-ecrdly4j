@@ -16,23 +16,16 @@ class WordDictionary:
         node.isEndOfWord = True
 
     def search(self, word: str) -> bool:
-        def dfs(node, index):
-            # Base case: we've matched all characters
+        def dfs(index, node):
             if index == len(word):
                 return node.isEndOfWord
-            
             char = word[index]
-            
-            if char == ".":
-                # Try matching with any child node
-                for child in node.children.values():
-                    if dfs(child, index + 1):
-                        return True
-                return False
+            if char == '.':
+                return any(dfs(index + 1, child) for child in node.children.values())
             else:
-                # Match exact character
-                if char not in node.children:
-                    return False
-                return dfs(node.children[char], index + 1)
-        return dfs(self.root, 0)
+                if char in node.children:
+                    return dfs(index + 1, node.children[char])
+                return False
+        
+        return dfs(0, self.root)
         
