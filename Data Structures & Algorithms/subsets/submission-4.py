@@ -1,0 +1,12 @@
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+
+        def dfs(i, subset):
+            res.append(subset)
+
+            for j in range(i, len(nums)):
+                dfs(j + 1, subset + [nums[j]])
+
+        dfs(0, [])
+        return res
